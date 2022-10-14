@@ -1,0 +1,53 @@
+CREATE TABLE `tag` (
+  `id` int(15) NOT NULL primary key,
+  `name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `client` (
+  `id` int(15) NOT NULL primary key,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `phone` char(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `media` (
+  `id` int(15) NOT NULL primary key,
+  `name` varchar(50) NOT NULL,
+  `file` varchar(50) NOT NULL,
+  `size` int(15) NOT NULL,
+  `duration` int(11) NOT NULL,
+  `tag` varchar(45) DEFAULT NULL,
+  `tag_id` int(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `play` (
+  `id` int(11) NOT NULL primary key,
+  `date` date DEFAULT NULL,
+  `client_id` int(15) NOT NULL,
+  `user_id` int(15) DEFAULT NULL,
+  `media_id`int(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `user` (
+  `id` int(15) NOT NULL primary key,
+  `name` varchar(100) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `media`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_media_tag` (`tag_id`);
+
+ALTER TABLE `play`
+  ADD KEY `fk_play_client_id` (`client_id`),
+  ADD KEY `fk_play_user` (`user_id`),
+  ADD KEY `fk-play_media` (`media_id`);
+
+ALTER TABLE `media`
+  ADD CONSTRAINT `fk_media_tag` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`);
+
+ALTER TABLE `play`
+  ADD CONSTRAINT `fk_play_client` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_play_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `fk_play_media`FOREIGN KEY (`media_id`) REFERENCES `media`(`id`);
