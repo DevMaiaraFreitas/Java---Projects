@@ -3,7 +3,7 @@ package entities;
 
 /**
  *
- * Developer Maiara Cristina de Freitas
+ * Developed by Maiara Cristina de Freitas
  */
 public class Department {
     private String name;
